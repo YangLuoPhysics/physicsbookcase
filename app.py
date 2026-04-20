@@ -55,7 +55,7 @@ if st.session_state['user_role']:
             st.info("📌 本週進度：剛體轉動與角動量")
             st.write("請先閱讀講義後，完成 GC 上的三題挑戰題。")
             # 跳轉到 Google Classroom 課程主頁
-            st.link_button("🏫 進入 Google Classroom", "請在此貼上您的課程網址")
+            st.link_button("🏫 進入 Google Classroom", "https://classroom.google.com/w/NzAxMjAwNzAyNjE4/t/all")
             
         with col2:
             st.warning("⏰ 繳交期限：週五 23:59")
