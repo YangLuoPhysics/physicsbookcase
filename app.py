@@ -44,16 +44,24 @@ if st.session_state['user_role']:
             st.info("講義 02：剛體轉動與慣性張量初探")
             st.button("下載 PDF 講義", key="dl2")
 
-    # B. 思維試煉 (學生作業提交)
+    # B. 思維試煉 (學生作業提交) 
     elif selected == "思維試煉(作業)":
         st.header("✍️ 課後邏輯試煉")
-        if st.session_state['user_role'] in ["學生", "羊珞老師 (Admin)"]:
-            st.warning("本週題目：分析『羊珞建築』的靜力平衡。")
-            uploaded_file = st.file_uploader("請上傳你的解題照片或 PDF (限定 200MB 內)", type=['png', 'jpg', 'pdf'])
-            if uploaded_file is not None:
-                st.success("檔案上傳成功！羊珞老師會盡快批改，咩～")
-        else:
-            st.error("請先登入學生身分以存取作業區。")
+        
+        # 建立兩個分欄，讓畫面更整齊
+        col1, col2 = st.columns(2)
+        
+        with col1:
+            st.info("📌 本週進度：剛體轉動與角動量")
+            st.write("請先閱讀講義後，完成 GC 上的三題挑戰題。")
+            # 跳轉到 Google Classroom 課程主頁
+            st.link_button("🏫 進入 Google Classroom", "請在此貼上您的課程網址")
+            
+        with col2:
+            st.warning("⏰ 繳交期限：週五 23:59")
+            st.write("如果對題目有疑問，可以先到『萬有引力園地』提問喔！")
+            # 跳轉到特定的一份作業頁面
+            st.link_button("📝 點我直接繳交作業", "請在此貼上特定作業的網址")
 
     # C. 模擬實驗室 (模擬器整合)
     elif selected == "模擬實驗室":
