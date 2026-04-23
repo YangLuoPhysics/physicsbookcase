@@ -11,13 +11,21 @@ if 'user_role' not in st.session_state:
 
 with st.sidebar:
     st.title("🐑 羊珞老師的實驗室")
-    st.write("「物理不只是公式，是理解世界的自由。」")
     
-    # 簡易身分選擇 (實際應用時應透過帳密登入)
-    role = st.selectbox("請選擇你的登入身分：", ["訪客", "學生", "羊珞老師 (Admin)"])
-    if st.button("確認進入"):
-        st.session_state['user_role'] = role
-        st.success(f"目前以 {role} 身分漫遊中")
+    # 取代原本的 Selectbox
+    input_user = st.text_input("學號 (Username)")
+    input_password = st.text_input("通行密碼 (Password)", type="password")
+    
+    if st.button("驗證身分"):
+        # 簡單的邏輯判斷 (未來可換成 Secrets 或資料庫)
+        if input_user == "admin" and input_password == "yangluo888":
+            st.session_state['user_role'] = "羊珞老師 (Admin)"
+            st.success("老師好！系統已解鎖。")
+        elif input_user.startswith("S") and input_password == "physics123":
+            st.session_state['user_role'] = "學生"
+            st.success("驗證成功，歡迎進入漫遊天地！")
+        else:
+            st.error("邏輯驗證失敗，請檢查帳密。")
 
 # --- 3. 主導覽選單 ---
 if st.session_state['user_role']:
