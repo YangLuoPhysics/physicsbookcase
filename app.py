@@ -1,5 +1,6 @@
 import streamlit as st
 from streamlit_option_menu import option_menu
+import streamlit.components.v1 as components # 新增這一行
 
 # --- 1. 頂端設定區 ---
 st.set_page_config(page_title="物理漫遊天地 | 羊珞老師", page_icon="🐑", layout="wide")
