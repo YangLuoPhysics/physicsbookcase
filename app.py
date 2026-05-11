@@ -96,7 +96,7 @@ if selected == "物理新知":
         # 放置您的分享網址按鈕
         st.link_button(
             "🌐 查看 Gemini 協作筆記", 
-            "https://gemini.google.com/share/95f95a8f683a",
+            "https://gemini.google.com/share/daa03a8fec06",
             icon="🐑",
             help="點擊查看完整邏輯推導過程"
         )
