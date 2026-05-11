@@ -98,7 +98,7 @@ def render_skyscraper_sim():
                     {tmdActive ? "🟡 TMD 已啟動" : "⚪ TMD 已關閉"}
                   </button>
 
-                  <a href="https://gemini.google.com/share/532b796fbbc6" target="_blank" className="block w-full mt-4 py-3 bg-sky-600/20 hover:bg-sky-600/40 border border-sky-500/50 rounded-xl text-center text-sky-300 text-sm font-bold transition-all no-underline">
+                  <a href="https://gemini.google.com/share/fec9b6478ac6" target="_blank" className="block w-full mt-4 py-3 bg-sky-600/20 hover:bg-sky-600/40 border border-sky-500/50 rounded-xl text-center text-sky-300 text-sm font-bold transition-all no-underline">
                     <i className="fas fa-robot mr-2"></i> 查看 Gemini 邏輯筆記
                   </a>
                 </div>
