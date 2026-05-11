@@ -206,10 +206,18 @@ selected = option_menu(None, options=menu, icons=icons, orientation="horizontal"
 # --- 4. 主畫面分頁內容區 ---
 
 # 【遊客與全員區】：物理新知
+
 if selected == "物理新知":
     st.header("✨ 物理漫遊：今日新知")
-    st.write("在這裡，我們用最簡單的語言，解構宇宙的奧祕。")
-    st.info("💡 建築中的物理：為何摩天大樓在強風中不會倒下？ (受力分析專題)")
+    st.write("摩天大樓在颱風中如何保持穩定？這背後隱藏著強大的受力分析邏輯。")
+    
+    # 這裡就是呼叫我們剛才定義的函數
+    render_skyscraper_sim()
+    
+    st.markdown("---")
+    st.write("🔍 **羊珞老師的小筆記：**")
+    st.write("觀察看看，當你關閉 TMD 時，大樓的擺動幅度是不是明顯變大了？這就是『阻尼』在物理系統中的重要性。")
+
 
 # 【遊客與全員區】：PhET 實驗室
 elif selected == "PhET實驗室":
