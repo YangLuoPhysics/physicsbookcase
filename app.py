@@ -2,8 +2,6 @@ import streamlit as st
 from streamlit_option_menu import option_menu
 import streamlit.components.v1 as components # 新增這一行
 
-import streamlit.components.v1 as components
-
 def render_skyscraper_sim():
     """
     將 React 摩天大樓模擬器封裝為 Streamlit 組件
