@@ -4,123 +4,98 @@ from streamlit_option_menu import option_menu
 # --- 1. 頂端設定區 ---
 st.set_page_config(page_title="物理漫遊天地 | 羊珞老師", page_icon="🐑", layout="wide")
 
-# 虛擬用戶名單 (帳號設定處)
+# 虛擬用戶數據庫 (帳號、密碼、姓名、角色、進度)
 USER_DB = {
     "admin": {"pw": "yangluo888", "name": "羊珞老師", "role": "老師"},
     "S001": {"pw": "physics123", "name": "林同學", "role": "學生", "progress": 85},
     "S002": {"pw": "physics123", "name": "王同學", "role": "學生", "progress": 40},
 }
 
-# 初始化身分狀態
+# 初始化身分狀態 (預設為訪客)
 if 'user_role' not in st.session_state:
-    st.session_state['user_role'] = "訪客"
-    st.session_state['user_name'] = "遊客"
+    st.session_state['user_role'] = "遊客"
+    st.session_state['user_name'] = "一般遊客"
 
-# --- 2. 側邊欄邏輯區 (身分驗證) ---
+# --- 2. 側邊欄：身分驗證與羊珞小羊動畫 ---
 with st.sidebar:
-    st.title("🐑 羊珞老師的實驗室")
-    st.write("「物理不只是公式，是理解世界的自由。」")
+    st.title("🐑 物理漫遊天地")
+    
+    # 【SVG 動畫位置】: 這裡可以放置您的 SVG 代碼
+    svg_mascot = """
+    <svg width="200" height="150" viewBox="0 0 200 150" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="100" cy="75" r="40" fill="#f8f9fa" stroke="#005088" stroke-width="2">
+        <animate attributeName="cy" values="75;65;75" dur="2s" repeatCount="indefinite" />
+      </circle>
+      <text x="75" y="80" font-family="Arial" font-size="12" fill="#005088">咩~ Science</text>
+    </svg>
+    """
+    st.markdown(svg_mascot, unsafe_allow_html=True)
+    
     st.markdown("---")
     
-    if st.session_state['user_role'] == "訪客":
-        st.subheader("🔑 系統登入")
-        input_user = st.text_input("學號 / 帳號")
-        input_password = st.text_input("通行密碼", type="password")
-        if st.button("驗證身分"):
-            if input_user in USER_DB and USER_DB[input_user]["pw"] == input_password:
-                st.session_state['user_role'] = USER_DB[input_user]["role"]
-                st.session_state['user_name'] = USER_DB[input_user]["name"]
-                st.session_state['current_uid'] = input_user
-                st.success(f"歡迎，{st.session_state['user_name']}！")
+    # 登入邏輯
+    if st.session_state['user_role'] == "遊客":
+        st.subheader("🔑 成員登入")
+        u = st.text_input("帳號/學號")
+        p = st.text_input("密碼", type="password")
+        if st.button("驗證進入"):
+            if u in USER_DB and USER_DB[u]["pw"] == p:
+                st.session_state['user_role'] = USER_DB[u]["role"]
+                st.session_state['user_name'] = USER_DB[u]["name"]
+                st.session_state['current_uid'] = u
                 st.rerun()
             else:
-                st.error("驗證失敗，請檢查帳密。")
+                st.error("邏輯驗證失敗")
     else:
         st.write(f"當前身分：**{st.session_state['user_role']}**")
-        st.write(f"使用者：{st.session_state['user_name']}")
-        if st.button("登出系統"):
-            st.session_state['user_role'] = "訪客"
-            st.session_state['user_name'] = "遊客"
+        st.write(f"歡迎，{st.session_state['user_name']}")
+        if st.button("登出"):
+            st.session_state['user_role'] = "遊客"
             st.rerun()
 
-# --- 3. 動態導覽選單 ---
-# 根據身分定義選單選項
+# --- 3. 動態導覽選單架構 ---
 if st.session_state['user_role'] == "老師":
-    menu_options = ["物奧講堂", "模擬實驗室", "思維試煉(作業)", "導師批改室", "萬有引力園地"]
-    menu_icons = ["book", "cpu", "pencil-fill", "check2-circle", "chat-dots"]
+    menu = ["物理新知", "PhET實驗室", "Google Classroom", "教師後台"]
+    icons = ["lightbulb", "cpu", "send", "shield-lock"]
 elif st.session_state['user_role'] == "學生":
-    menu_options = ["物奧講堂", "模擬實驗室", "我的學習進度", "思維試煉(作業)", "萬有引力園地"]
-    menu_icons = ["book", "cpu", "graph-up-arrow", "pencil-fill", "chat-dots"]
-else: # 訪客
-    menu_options = ["物奧講堂", "模擬實驗室"]
-    menu_icons = ["book", "cpu"]
+    menu = ["物理新知", "PhET實驗室", "我的進度", "Google Classroom"]
+    icons = ["lightbulb", "cpu", "graph-up", "send"]
+else: # 遊客
+    menu = ["物理新知", "PhET實驗室"]
+    icons = ["lightbulb", "cpu"]
 
-selected = option_menu(
-    menu_title=None, 
-    options=menu_options, 
-    icons=menu_icons, 
-    menu_icon="cast", 
-    default_index=0, 
-    orientation="horizontal"
-)
+selected = option_menu(None, options=menu, icons=icons, orientation="horizontal")
 
-# --- 4. 主畫面分頁區 ---
+# --- 4. 主畫面分頁內容區 ---
 
-# A. 物奧講堂
-if selected == "物奧講堂":
-    st.header("🧬 物奧專題講義")
-    st.write("這裡是公開的物理知識庫，歡迎漫遊。")
-    col1, col2 = st.columns(2)
-    with col1:
-        st.info("講義 01：變質量系統")
-        st.markdown("[📥 點我預覽講義連結](https://example.com)")
-    with col2:
-        st.info("講義 02：剛體轉動")
-        st.markdown("[📥 點我預覽講義連結](https://example.com)")
+# 【遊客與全員區】：物理新知
+if selected == "物理新知":
+    st.header("✨ 物理漫遊：今日新知")
+    st.write("在這裡，我們用最簡單的語言，解構宇宙的奧祕。")
+    st.info("💡 建築中的物理：為何摩天大樓在強風中不會倒下？ (受力分析專題)")
 
-# B. 模擬實驗室
-elif selected == "模擬實驗室":
-    st.header("🔬 怪奇物理實驗室")
+# 【遊客與全員區】：PhET 實驗室
+elif selected == "PhET實驗室":
+    st.header("🔬 互動模擬實驗室")
+    # 這裡可以切換不同的模擬器
     st.components.v1.iframe("https://phet.colorado.edu/sims/html/projectile-motion/latest/projectile-motion_all.html", height=600)
 
-# C. 我的學習進度 (僅學生可見)
-elif selected == "我的學習進度":
-    st.header(f"📊 {st.session_state['user_name']} 的學習軌跡")
+# 【學生專屬】：進度追蹤
+elif selected == "我的進度":
     uid = st.session_state['current_uid']
-    progress_val = USER_DB[uid]["progress"]
-    st.write(f"本學期物理特訓達成率：{progress_val}%")
-    st.progress(progress_val / 100)
-    st.write("💡 完成更多作業來提升你的進度條吧！")
+    st.header(f"📊 {st.session_state['user_name']} 的學習軌跡")
+    prog = USER_DB[uid]["progress"]
+    st.progress(prog / 100)
+    st.write(f"目前課程完成率：{prog}%")
 
-# D. 思維試煉(作業) (學生與老師可見)
-elif selected == "思維試煉(作業)":
-    st.header("✍️ 課後邏輯試煉")
-    st.write("請跳轉至 Google Classroom 進行作業繳交。")
-    c1, c2 = st.columns(2)
-    with c1:
-        st.link_button("🏫 進入 Google Classroom", "https://classroom.google.com", icon="🚀")
-    with c2:
-        st.link_button("📝 檢視本週特定作業", "https://classroom.google.com", icon="📤")
+# 【學生/老師】：Google Classroom 連動
+elif selected == "Google Classroom":
+    st.header("🏫 教學雲端聯結")
+    st.write("講義傳承、作業派發與線上討論。")
+    st.link_button("🚀 前往 Classroom 繳交作業", "https://classroom.google.com")
 
-# E. 導師批改室 (僅老師可見)
-elif selected == "導師批改室":
-    st.header("🖋️ 羊珞老師的批改桌")
-    st.write("目前班級繳交概況：")
-    st.table({
-        "學號": ["S001", "S002"],
-        "姓名": ["林同學", "王同學"],
-        "進度": ["85%", "40%"],
-        "狀態": ["待批改", "未繳交"]
-    })
-    st.button("開啟線上繪圖批改工具 (開發中)")
-
-# F. 萬有引力園地
-elif selected == "萬有引力園地":
-    st.header("💬 萬有引力討論園地")
-    st.text_area("有什麼物理難題想跟大家討論嗎？")
-    if st.button("送出訊息"):
-        st.success("訊息已發布！")
-
-# --- 5. 頁尾 ---
-st.markdown("---")
-st.caption(f"© 2026 物理漫遊天地 - 當前身分：{st.session_state['user_role']} | 咩～🐑")
+# 【教師專屬】：後台觀察室
+elif selected == "教師後台":
+    st.header("👁️ 羊珞老師的戰略觀測站")
+    st.write("這裡可以觀察所有學生的「玄機」與進度。")
+    st.table(USER_DB) # 快速觀察名單數據
