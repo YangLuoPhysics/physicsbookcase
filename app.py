@@ -78,6 +78,10 @@ if selected == "物理新知":
             "url": "https://gemini.google.com/share/1147cbe3ad0e",
             "desc": "從橢圓軌道看見萬有引力與動能、位能的完美交織，理解行星運動的規律。"
         },
+        "🌌 重力位能一般式：穿越星際的能量場": {
+            "url": "https://gemini.google.com/share/c980bc66efa6",
+            "desc": "從無窮遠處到近地表，探索萬有引力如何決定物體的勢能，並觀察能量在不同距離間的變化。"
+        }
         # "🔭 你的下一個新知": {"url": "網址", "desc": "簡介"}
     }
 
